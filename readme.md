@@ -1,4 +1,4 @@
-# IPFIX Generator
+# IPFIX Netflow Generator
 
 ## Overview
 
