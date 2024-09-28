@@ -54,7 +54,7 @@ pip install PyQt5 scapy
 To launch the IPFIX Generator with the GUI:
 
 ```bash
-python lm-netflow-gen-v3.py --gui
+sudo python lm-netflow-gen-v3.py --gui
 ```
 
 The GUI provides an intuitive interface for setting parameters, starting/stopping traffic generation, and viewing generated flows.
@@ -64,7 +64,7 @@ The GUI provides an intuitive interface for setting parameters, starting/stoppin
 For command-line usage:
 
 ```bash
-python lm-netflow-gen-v3.py [options]
+sudo python lm-netflow-gen-v3.py [options]
 ```
 
 #### Options:
@@ -82,7 +82,7 @@ python lm-netflow-gen-v3.py [options]
 #### Example:
 
 ```bash
-python lm-netflow-gen-v3.py --source 192.168.1.1,192.168.1.2 --destination 10.0.0.1 --port 2055 --flows 1000 --interval 1 --flows-per-interval 5 --flows-per-packet 2 --flow-src-ips 192.168.0.0/24 --flow-dst-ips 10.0.0.0/24
+sudo python lm-netflow-gen-v3.py --source 192.168.1.1,192.168.1.2 --destination 10.0.0.1 --port 2055 --flows 1000 --interval 1 --flows-per-interval 5 --flows-per-packet 2 --flow-src-ips 192.168.0.0/24 --flow-dst-ips 10.0.0.0/24
 ```
 
 ## GUI Features
