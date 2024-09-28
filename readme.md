@@ -74,7 +74,7 @@ python lm-netflow-gen-v3.py [options]
 - `--port`: Destination port (default: 2055)
 - `--flows`: Number of flows to generate (0 for infinite)
 - `--interval`: Interval between flow generations in seconds
-- `--flows-per-interval`: Number of flows to send in each interval
+- `--packets-per-interval`: Number of packets to send in each interval
 - `--flows-per-packet`: Number of flows per packet (0 for random 1-10)
 - `--flow-src-ips`: Comma-separated list of source IP addresses or CIDR ranges for flows
 - `--flow-dst-ips`: Comma-separated list of destination IP addresses or CIDR ranges for flows

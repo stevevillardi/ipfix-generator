@@ -105,7 +105,7 @@ class IPFIXGeneratorThread(QThread):
     flow_signal = pyqtSignal(dict)
     stats_signal = pyqtSignal(int)  # New signal for updating total flows sent
 
-    def __init__(self, source_ips, destination_ip, destination_port, num_flows, interval, flows_per_interval, flows_per_packet, flow_src_ips, flow_dst_ips, flows):
+    def __init__(self, source_ips, destination_ip, destination_port, num_flows, interval, packets_per_interval, flows_per_packet, flow_src_ips, flow_dst_ips, flows):
         QThread.__init__(self)
         self.source_ips = source_ips
         self.destination_ip = destination_ip
@@ -113,7 +113,7 @@ class IPFIXGeneratorThread(QThread):
         self.num_flows = num_flows
         self.interval = interval
         self.flows = flows
-        self.flows_per_interval = flows_per_interval
+        self.packets_per_interval = packets_per_interval
         self.flows_per_packet = flows_per_packet
         self.flow_src_ips = flow_src_ips
         self.flow_dst_ips = flow_dst_ips
@@ -263,7 +263,7 @@ class IPFIXGeneratorThread(QThread):
 
         return (record) 
 
-    def send_ipfix(self, source_ips, destination_ip, destination_port, num_flows, interval, flows_per_interval, flows_per_packet):
+    def send_ipfix(self, source_ips, destination_ip, destination_port, num_flows, interval, packets_per_interval, flows_per_packet):
         flowset_id = 257
         while self.is_running and (num_flows == 0 or num_flows > 0):
             current_time = time.time()
@@ -281,7 +281,7 @@ class IPFIXGeneratorThread(QThread):
 
             # Send data flows
             flows_sent = 0
-            while flows_sent < flows_per_interval:
+            while flows_sent < packets_per_interval:
                 if not self.is_running or (num_flows > 0 and num_flows <= 0):
                     break
                 
@@ -289,7 +289,7 @@ class IPFIXGeneratorThread(QThread):
                 if flows_per_packet == 0:
                     packet_flows = random.randint(1, 10)
                 else:
-                    packet_flows = min(flows_per_packet, flows_per_interval - flows_sent)
+                    packet_flows = min(flows_per_packet, packets_per_interval - flows_sent)
                 
                 data_records = b''
                 for _ in range(packet_flows):
@@ -317,7 +317,7 @@ class IPFIXGeneratorThread(QThread):
         self.update_signal.emit("Finished sending IPFIX traffic")
 
     def run(self):
-        self.send_ipfix(self.source_ips, self.destination_ip, self.destination_port, self.num_flows, self.interval, self.flows_per_interval, self.flows_per_packet)
+        self.send_ipfix(self.source_ips, self.destination_ip, self.destination_port, self.num_flows, self.interval, self.packets_per_interval, self.flows_per_packet)
 
     def stop(self):
         self.is_running = False
@@ -482,13 +482,13 @@ class IPFIXGeneratorGUI(QWidget):
         layout.addLayout(interval_layout)
 
         # Flows per Interval
-        flows_per_interval_layout = QHBoxLayout()
-        flows_per_interval_layout.addWidget(QLabel("Packets per Interval:"))
-        self.flows_per_interval = QSpinBox()
-        self.flows_per_interval.setRange(1, 1000)
-        self.flows_per_interval.setValue(self.cli_args.flows_per_interval if self.cli_args else 5)
-        flows_per_interval_layout.addWidget(self.flows_per_interval)
-        layout.addLayout(flows_per_interval_layout)
+        packets_per_interval_layout = QHBoxLayout()
+        packets_per_interval_layout.addWidget(QLabel("Packets per Interval:"))
+        self.packets_per_interval = QSpinBox()
+        self.packets_per_interval.setRange(1, 1000)
+        self.packets_per_interval.setValue(self.cli_args.packets_per_interval if self.cli_args else 5)
+        packets_per_interval_layout.addWidget(self.packets_per_interval)
+        layout.addLayout(packets_per_interval_layout)
 
         # Flows per Packet
         flows_per_packet_layout = QHBoxLayout()
@@ -556,7 +556,7 @@ class IPFIXGeneratorGUI(QWidget):
         dest_port = self.dest_port.value()
         num_flows = self.num_flows.value()
         interval = self.interval.value()
-        flows_per_interval = self.flows_per_interval.value()
+        packets_per_interval = self.packets_per_interval.value()
         flows_per_packet = self.flows_per_packet.value()
 
         flow_src_ips = parse_ip_ranges(self.flow_src_ips.toPlainText()) if self.flow_src_ips.toPlainText() else []
@@ -567,7 +567,7 @@ class IPFIXGeneratorGUI(QWidget):
         flows = generate_flows(flow_src_ips, flow_dst_ips, num_flows_to_generate)  # Assuming TCP (protocol 6)
         self.update_log(f"Generated {num_flows_to_generate} sample flows for generation")
 
-        self.generator_thread = IPFIXGeneratorThread(source_ips, dest_ip, dest_port, num_flows, interval, flows_per_interval, flows_per_packet, flow_src_ips, flow_dst_ips, flows)
+        self.generator_thread = IPFIXGeneratorThread(source_ips, dest_ip, dest_port, num_flows, interval, packets_per_interval, flows_per_packet, flow_src_ips, flow_dst_ips, flows)
         self.generator_thread.update_signal.connect(self.update_log)
         self.generator_thread.flow_signal.connect(self.add_flow_to_table)
         self.generator_thread.stats_signal.connect(self.update_total_flows)
@@ -636,6 +636,6 @@ if __name__ == '__main__':
         source_ips = [ip.strip() for ip in args.source.split(',')] if args.source else []
         flow_src_ips = parse_ip_ranges(args.flow_src_ips) if args.flow_src_ips else []
         flow_dst_ips = parse_ip_ranges(args.flow_dst_ips) if args.flow_dst_ips else []
-        generator = IPFIXGeneratorThread(args.source, args.destination, args.port, args.flows, args.interval, args.flows_per_interval, args.flows_per_packet, flow_src_ips, flow_dst_ips)
+        generator = IPFIXGeneratorThread(args.source, args.destination, args.port, args.flows, args.interval, args.packets_per_interval, args.flows_per_packet, flow_src_ips, flow_dst_ips)
         generator.update_signal.connect(print)  # Print updates to console
         generator.run()
