@@ -2,11 +2,11 @@
 
 ## Overview
 
-The IPFIX Generator is a powerful tool designed to generate and send IPFIX (IP Flow Information Export) traffic for testing and demonstration purposes. It provides both a command-line interface and a graphical user interface (GUI) for easy operation.
+The IPFIX Netflow Generator is a powerful tool designed to generate and send IPFIX (IP Flow Information Export) traffic for testing and demonstration purposes. It provides both a command-line interface and a graphical user interface (GUI) for easy operation.
 
 ## Features
 
-- Generate IPFIX traffic with customizable parameters
+- Generate IPFIX netflow traffic with customizable parameters
 - Support for multiple source IP addresses
 - Configurable destination IP and port
 - Adjustable flow generation rate and interval
@@ -18,7 +18,7 @@ The IPFIX Generator is a powerful tool designed to generate and send IPFIX (IP F
 
 ![IPFIX Generator GUI](GUI-Example.png)
 
-This image shows the main interface of the IPFIX Generator, including the parameter input fields, control buttons, log output, and flow visualization table.
+This image shows the main interface of the IPFIX Netflow Generator, including the parameter input fields, control buttons, log output, and flow visualization table.
 
 ## Installation
 
