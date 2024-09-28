@@ -82,7 +82,7 @@ sudo python lm-netflow-gen-v3.py [options]
 #### Example:
 
 ```bash
-sudo python lm-netflow-gen-v3.py --source 192.168.1.1,192.168.1.2 --destination 10.0.0.1 --port 2055 --flows 1000 --interval 1 --flows-per-interval 5 --flows-per-packet 2 --flow-src-ips 192.168.0.0/24 --flow-dst-ips 10.0.0.0/24
+sudo python lm-netflow-gen-v3.py --source 192.168.1.1,192.168.1.2 --destination 10.0.0.1 --port 2055 --flows 1000 --interval 1 --packets-per-interval 5 --flows-per-packet 2 --flow-src-ips 192.168.0.0/24 --flow-dst-ips 10.0.0.0/24
 ```
 
 ## GUI Features
