@@ -1,8 +1,8 @@
-# IPFIX Generator
+# IPFIX Netflow Generator
 
 ## Overview
 
-The IPFIX Generator is a powerful tool designed to generate and send IPFIX (IP Flow Information Export) traffic for testing and demonstration purposes. It provides both a command-line interface and a graphical user interface (GUI) for easy operation.
+The IPFIX Netflow Generator is a powerful tool designed to generate and send IPFIX (IP Flow Information Export) traffic for testing and demonstration purposes. It provides both a command-line interface and a graphical user interface (GUI) for easy operation.
 
 ## Features
 
@@ -25,7 +25,7 @@ The IPFIX Generator is a powerful tool designed to generate and send IPFIX (IP F
 
 ![IPFIX Generator GUI](GUI-Example.png)
 
-This image shows the main interface of the IPFIX Generator, including the parameter input fields, control buttons, log output, and flow visualization table.
+This image shows the main interface of the IPFIX Netflow Generator, including the parameter input fields, control buttons, log output, and flow visualization table.
 
 ## Installation
 
@@ -61,7 +61,7 @@ pip install PyQt5 scapy
 To launch the IPFIX Generator with the GUI:
 
 ```bash
-python lm-netflow-gen-v3.py --gui
+sudo python lm-netflow-gen-v3.py --gui
 ```
 
 The GUI provides an intuitive interface for setting parameters, starting/stopping traffic generation, and viewing generated flows.
@@ -71,7 +71,7 @@ The GUI provides an intuitive interface for setting parameters, starting/stoppin
 For command-line usage:
 
 ```bash
-python lm-netflow-gen-v3.py [options]
+sudo python lm-netflow-gen-v3.py [options]
 ```
 
 #### Options:
